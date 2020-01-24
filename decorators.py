@@ -4,7 +4,7 @@
 # Created:
 #   2020/1/24 下午2:41:58
 # Last edited:
-#   2020/1/24 下午4:58:15
+#   2020/1/24 下午9:36:01
 # Auto updated?
 #   Yes
 #
@@ -34,7 +34,7 @@ def need_type(params: ty.Tuple = (), t: object = int, *args, **kwargs):
 
 
 @need_type(params=('params', 'supported'), t=tuple)
-def only_supported_string(params: ty.Tuple, supported: ty.Tuple, *args, **kwargs):
+def only_supported_elements(params: ty.Tuple, supported: ty.Tuple, *args, **kwargs):
     """ensure params' value must in supported."""
     def inner(func):
         def _inner(*args, **kwargs):
@@ -53,7 +53,7 @@ if __name__ == "__main__":
         return
     test(x='1')
 
-    @only_supported_string(params=('x',), supported=('0', '2'))
+    @only_supported_elements(params=('x',), supported=('0', '2'))
     def test(x):
         return
     test(x='1')
