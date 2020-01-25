@@ -4,7 +4,7 @@
 # Created:
 #   2020/1/24 下午8:39:02
 # Last edited:
-#   2020/1/24 下午8:56:47
+#   2020/1/25 下午1:52:55
 # Auto updated?
 #   Yes
 #
@@ -16,7 +16,9 @@
 import decorators
 
 
-@decorators.need_type(params=('text', 'display_mode', 'fg_color', 'bg_color'), t=str)
+@decorators.only_supported_elements(params=('display_mode',), supported=('normal', 'bold', 'light', 'italic', 'underline', 'flash', 'invert', None))
+@decorators.only_supported_elements(params=('fg_color',), supported=('black', 'red', 'green', 'yellow', 'blue', 'purple', 'cyan', 'grey', None))
+@decorators.only_supported_elements(params=('bg_color',), supported=('black', 'red', 'green', 'yellow', 'blue', 'purple', 'cyan', 'grey', None))
 def cprint(text: str = None, display_mode: str = "normal", fg_color: str = None, bg_color: str = None):
     """
         \033[ 颜色开头
@@ -41,71 +43,77 @@ def cprint(text: str = None, display_mode: str = "normal", fg_color: str = None,
         背景颜色:
             - 40 黑色   black
             - 41 红色   red
-            - 42 绿色   green    
+            - 42 绿色   green
             - 43 黄色   yellow
             - 44 蓝色   blue
-            - 45 紫色   purple 
+            - 45 紫色   purple
             - 46 青色   cyan
-            - 47 灰色   grey 
+            - 47 灰色   grey
     """
     # display mode
     _format_prefix = "\033["
     if display_mode == "normal":
-        _format_prefix += "1;"
+        _format_prefix += "0"
     elif display_mode == "bold":
-        _format_prefix += "2;"
+        _format_prefix += "1"
+    elif display_mode == "light":
+        _format_prefix += "2"
     elif display_mode == "italic":
-        _format_prefix += "3;"
+        _format_prefix += "3"
     elif display_mode == "underline":
-        _format_prefix += "4;"
+        _format_prefix += "4"
     elif display_mode == "flash":
-        _format_prefix += "5;"
+        _format_prefix += "5"
     elif display_mode == "invert":
-        _format_prefix += "7;"
+        _format_prefix += "7"
     else:
-        _format_prefix += "1;"
+        _format_prefix += "0"
     # text color
     if fg_color == "black":
-        _format_prefix += "30;"
+        _format_prefix += ";30"
     elif fg_color == "red":
-        _format_prefix += "31;"
+        _format_prefix += ";31"
     elif fg_color == "green":
-        _format_prefix += "32;"
+        _format_prefix += ";32"
     elif fg_color == "yellow":
-        _format_prefix += '33;'
+        _format_prefix += ';33'
     elif fg_color == "blue":
-        _format_prefix += "34;"
+        _format_prefix += ";34"
     elif fg_color == "purple":
-        _format_prefix += "35;"
+        _format_prefix += ";35"
     elif fg_color == "cyan":
-        _format_prefix += "36;"
+        _format_prefix += ";36"
     elif fg_color == "grey":
-        _format_prefix += "37;"
+        _format_prefix += ";37"
     else:
-        _format_prefix += "37;"
+        _format_prefix += ";30"
     # background color
     if bg_color == "black":
-        _format_prefix += "40m"
+        _format_prefix += ";40m"
     elif bg_color == "red":
-        _format_prefix += "41m"
+        _format_prefix += ";41m"
     elif bg_color == "green":
-        _format_prefix += "42m"
+        _format_prefix += ";42m"
     elif bg_color == "yellow":
-        _format_prefix += "43m"
+        _format_prefix += ";43m"
     elif bg_color == "blue":
-        _format_prefix += "44m"
+        _format_prefix += ";44m"
     elif bg_color == "purple":
-        _format_prefix += "45m"
+        _format_prefix += ";45m"
     elif bg_color == "cyan":
-        _format_prefix += "46m"
+        _format_prefix += ";46m"
     elif bg_color == "grey":
-        _format_prefix += "47m"
+        _format_prefix += ";47m"
+    else:
+        _format_prefix += "m"
 
     print(f"{_format_prefix}{text}\033[0m")
 
 
-@decorators.need_type(params=('text', 'display_mode', 'fg_color', 'bg_color'), t=str)
-def ctext(text: str = None, display_mode: str = "normal", fg_color: str = None, bg_color: str = None):
+@decorators.only_supported_elements(params=('display_mode',), supported=('normal', 'bold', 'light', 'italic', 'underline', 'flash', 'invert', None))
+@decorators.only_supported_elements(params=('fg_color',), supported=('black', 'red', 'green', 'yellow', 'blue', 'purple', 'cyan', 'grey', None))
+@decorators.only_supported_elements(params=('bg_color',), supported=('black', 'red', 'green', 'yellow', 'blue', 'purple', 'cyan', 'grey', None))
+def ctext(text: str = None, display_mode: str = "normal", fg_color: str = 'black', bg_color: str = None):
     """
         \033[ 颜色开头
         显示方式:
@@ -129,65 +137,69 @@ def ctext(text: str = None, display_mode: str = "normal", fg_color: str = None, 
         背景颜色:
             - 40 黑色   black
             - 41 红色   red
-            - 42 绿色   green    
+            - 42 绿色   green
             - 43 黄色   yellow
             - 44 蓝色   blue
-            - 45 紫色   purple 
+            - 45 紫色   purple
             - 46 青色   cyan
-            - 47 灰色   grey 
+            - 47 灰色   grey
     """
     # display mode
     _format_prefix = "\033["
     if display_mode == "normal":
-        _format_prefix += "1;"
+        _format_prefix += "0"
     elif display_mode == "bold":
-        _format_prefix += "2;"
+        _format_prefix += "1"
+    elif display_mode == "light":
+        _format_prefix += "2"
     elif display_mode == "italic":
-        _format_prefix += "3;"
+        _format_prefix += "3"
     elif display_mode == "underline":
-        _format_prefix += "4;"
+        _format_prefix += "4"
     elif display_mode == "flash":
-        _format_prefix += "5;"
+        _format_prefix += "5"
     elif display_mode == "invert":
-        _format_prefix += "7;"
+        _format_prefix += "7"
     else:
-        _format_prefix += "1;"
+        _format_prefix += "0"
     # text color
     if fg_color == "black":
-        _format_prefix += "30;"
+        _format_prefix += ";30"
     elif fg_color == "red":
-        _format_prefix += "31;"
+        _format_prefix += ";31"
     elif fg_color == "green":
-        _format_prefix += "32;"
+        _format_prefix += ";32"
     elif fg_color == "yellow":
-        _format_prefix += '33;'
+        _format_prefix += ';33'
     elif fg_color == "blue":
-        _format_prefix += "34;"
+        _format_prefix += ";34"
     elif fg_color == "purple":
-        _format_prefix += "35;"
+        _format_prefix += ";35"
     elif fg_color == "cyan":
-        _format_prefix += "36;"
+        _format_prefix += ";36"
     elif fg_color == "grey":
-        _format_prefix += "37;"
+        _format_prefix += ";37"
     else:
-        _format_prefix += "37;"
+        _format_prefix += ";30"
     # background color
     if bg_color == "black":
-        _format_prefix += "40m"
+        _format_prefix += ";40m"
     elif bg_color == "red":
-        _format_prefix += "41m"
+        _format_prefix += ";41m"
     elif bg_color == "green":
-        _format_prefix += "42m"
+        _format_prefix += ";42m"
     elif bg_color == "yellow":
-        _format_prefix += "43m"
+        _format_prefix += ";43m"
     elif bg_color == "blue":
-        _format_prefix += "44m"
+        _format_prefix += ";44m"
     elif bg_color == "purple":
-        _format_prefix += "45m"
+        _format_prefix += ";45m"
     elif bg_color == "cyan":
-        _format_prefix += "46m"
+        _format_prefix += ";46m"
     elif bg_color == "grey":
-        _format_prefix += "47m"
+        _format_prefix += ";47m"
+    else:
+        _format_prefix += "m"
 
     return f"{_format_prefix}{text}\033[0m"
 
@@ -195,10 +207,10 @@ def ctext(text: str = None, display_mode: str = "normal", fg_color: str = None, 
 if __name__ == "__main__":
     # test
     cprint(text="Hello", display_mode="flash",
-           fg_color="white", bg_color="cyan")
+           fg_color="grey", bg_color="cyan")
 
     t1 = ctext(text="Hello", display_mode="flash",
-               fg_color="white", bg_color="blue")
+               fg_color="grey", bg_color="blue")
     t2 = ctext(text="World,", display_mode="normal",
                fg_color="black", bg_color="green")
     t3 = ctext(text="I am", display_mode="underline",
