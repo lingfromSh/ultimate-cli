@@ -5,9 +5,10 @@
 Python3.8
 
 ## 模块
-| Name  | Description | Finished | 
-| ----  | ----------- | -------- |
-| tools |     工具包   |  没有    |
-| color | 色彩常用函数| 没有      |
-| stdout|  标准输出     | 没有     |
-| decorators|  装饰器   | 没有     |
+| Name  | Description           |  Finished  | 
+| ----  | --------------------- | ---------  |
+| tools | 包含各种常用的cli类型工具 | in process |
+
+- tools
+  - checkbox 复选列表
+  - choice   单选列表
