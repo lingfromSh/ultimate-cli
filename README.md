@@ -4,6 +4,9 @@
 ## 环境
 Python3.8
 
+## 第三方包
+1. curses
+
 ## 模块
 | Name  | Description           |  Finished  | 
 | ----  | --------------------- | ---------  |
