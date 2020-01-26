@@ -1,16 +1,12 @@
-# DECORATORS.py
-#   by Stephen Ling
-#
-# Created:
-#   2020/1/24 下午2:41:58
-# Last edited:
-#   2020/1/24 下午9:36:01
-# Auto updated?
-#   Yes
-#
-# Description:
-#   <Todo>
-#
+'''
+Filename: /home/ling/文档/ultimate-cli/decorators.py
+Path: /home/ling/文档/ultimate-cli
+Created Date: Sunday, January 26th 2020, 2:24:40 pm
+Author: ling
+
+Copyright (c) 2020 Your Company
+'''
+
 
 import typing as ty
 

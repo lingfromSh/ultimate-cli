@@ -1,15 +1,11 @@
-# TOOLS.py
-#   by Stephen Ling
-#
-# Created:
-#   2020/1/24 下午9:31:48
-# Last edited:
-#   2020/1/25 下午9:00:14
-# Auto updated?
-#   Yes
-#
-# Description:
-#   <Todo>
-#
+'''
+Filename: /home/ling/文档/ultimate-cli/tools.py
+Path: /home/ling/文档/ultimate-cli
+Created Date: Sunday, January 26th 2020, 2:24:40 pm
+Author: ling
+
+Copyright (c) 2020 Your Company
+'''
+
 import curses  # 界面绘图,键盘响应
 
