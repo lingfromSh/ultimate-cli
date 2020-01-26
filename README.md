@@ -2,16 +2,22 @@
 > **超级CLI 为Python提供一个快速，方便，高可用的开发终端交互的工具包.**
 
 ## 环境
-Python3.8
+Python3.6+
 
 ## 第三方包
 1. curses
 
 ## 模块
-| Name  | Description           |  Finished  | 
-| ----  | --------------------- | ---------  |
-| tools | 包含各种常用的cli类型工具 | in process |
-| decorators|用于检查传值等等| finished|
+|Name|Description|
+|:-|:-|:-|
+|tools|包含各种常用的cli类型工具|
+|decorators|用于检查传值等等|
+
+## 模块进度
+1. tools
+ - [ ] checkbox
+ - [ ] range
+ - [x] choice
 
 ## 模块设计
 ### 1. tools
@@ -25,7 +31,3 @@ menu = {
     'handler': lambda val : val # 支持匿名函数，或者函数
 }
 ```
-1. choice 单选
-
-
-2. checkbox 复选
