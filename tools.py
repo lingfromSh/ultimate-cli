@@ -10,6 +10,8 @@ Copyright (c) 2020 Your Company
 import curses  # 界面绘图,键盘响应
 import decorators   # 参数检查
 
+"""component"""
+
 __all__ = ["get_handler"]
 
 
@@ -162,7 +164,8 @@ class Checkbox(RenderObj):
             elif key == 32:
                 tmp = self.choices[self.crow-self.choices_start_row]
                 if tmp in self.selected:
-                    self.scr.addstr(self.crow, self.ccol+1, self.unchecked_icon)
+                    self.scr.addstr(self.crow, self.ccol +
+                                    1, self.unchecked_icon)
                     self.selected.remove(tmp)
                 else:
                     self.scr.addstr(self.crow, self.ccol+1, self.checked_icon)
@@ -171,6 +174,15 @@ class Checkbox(RenderObj):
             elif key == 10 or key == curses.KEY_ENTER:
                 return self.selected
             self.scr.refresh()
+
+
+class Range(RenderObj):
+    def __init__(self, menu):
+        super().__init__(menu)
+        curses.noecho()
+        curses.cbreak()
+        self.max = menu.get("max", 100)
+        self.min = menu.get("min", 0)
 
 
 @decorators.need_keys(param="menu", keys={"type"})
