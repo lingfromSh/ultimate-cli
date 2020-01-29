@@ -15,7 +15,7 @@ Python3.6+
 
 ## 模块进度
 1. tools
-    - [ ] checkbox
+    - [x] checkbox
     - [ ] range
     - [x] choice
 
