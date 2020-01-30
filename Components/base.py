@@ -43,16 +43,23 @@ e.g-2:
 
 
 import curses
+import secrets
 import typing as ty
 
-from .common import *
+from .common import KEY_ENTER, KEY_SPACE, KEY_UP, KEY_DOWN, KEY_LEFT, KEY_RIGHT
 
 
 class ComponentBase:
     _name = "base__component"
 
-    def __init__(self, name: ty.AnyStr, handler: ty.Callable, start_row: ty.SupportsInt, start_col: ty.SupportsInt, father: ty.Union[ComponentBase, None], children: ty.Union[ComponentBase, None]):
-        self.name = name
+    def __init__(self,
+                 name: ty.AnyStr, 
+                 handler: ty.Callable, 
+                 start_row: ty.SupportsInt, 
+                 start_col: ty.SupportsInt, 
+                 father: ty.Union[object, None],
+                 children: ty.Union[object, ty.List]):
+        self.name = name if name else f"{ComponentBase._name}__{sercrets.token_hex(8)}"
         self.handler = handler
         self.start_row = start_row
         self.start_col = start_col
@@ -73,7 +80,9 @@ class ComponentBase:
             return KEY_UP
         elif k == curses.KEY_DOWN:
             return KEY_DOWN
-        elif k == curses.KEY_ENTER:
+        elif k == curses.KEY_ENTER or k == 13 or k == 10:
             return KEY_ENTER
         elif k == 32:
             return KEY_SPACE
+        else:
+            return -65536
