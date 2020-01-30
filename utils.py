@@ -26,11 +26,11 @@ def std_log(content):
     print(f"********\n{content}\n********")
 
 
-def parse(menu: ty.List, father: object=None) -> ty.List:
+def parse(menu: ty.List, father: object=None, start_row:ty.SupportsInt=0) -> ty.List:
     """Convert each element in the menu into cli components."""
     # a new menu consists of cli components
     render_menu = []
-    row = 0
+    row = start_row
     col = 0
     # ensure menu is a list.if not, stop render.
     if not isinstance(menu, list):
@@ -68,7 +68,7 @@ def parse(menu: ty.List, father: object=None) -> ty.List:
                 "start_row": row,
                 "start_col": col,
                 "father": father,
-                "children": parse(elem.get("children",[]), _name),
+                "children": parse(elem.get("children",[]), _name, row),
             }
             row += 1    # row + 1
             e = CheckBoxComponent(**params)
@@ -82,7 +82,7 @@ def parse(menu: ty.List, father: object=None) -> ty.List:
                 "start_row": row,
                 "start_col": col,
                 "father": father,
-                "children": parse(elem.get("children", []), _name),
+                "children": parse(elem.get("children", []), _name, row),
             }
             row += 1    # row + 1
             e = ChoiceComponent(**params)
@@ -96,7 +96,7 @@ def parse(menu: ty.List, father: object=None) -> ty.List:
                 "start_row": row,
                 "start_col": col,
                 "father": father,
-                "children": parse(elem.get("children", []), _name),
+                "children": parse(elem.get("children", []), _name, row),
             }
             row += 1    # row + 1
             e = OptionComponent(**params)
@@ -110,7 +110,7 @@ def parse(menu: ty.List, father: object=None) -> ty.List:
                 "start_row": row,
                 "start_col": col,
                 "father": father,
-                "children": parse(elem.get("children", []), _name)
+                "children": parse(elem.get("children", []), _name, row)
             }
             row += 1    # row + 1
             e = RangeComponent(**params)
@@ -144,8 +144,12 @@ if __name__ == "__main__":
             }
         ]
     }
-
+    
     # create a menu
+    import curses
+    scr = curses.initscr()
+    curses.noecho()
+    curses.cbreak()
     menu = [
         header,
         subject,
@@ -153,6 +157,9 @@ if __name__ == "__main__":
     ]   # ultimate-cli will render the menu in order.
     root = None
     render_menu = parse(menu, root)
-    print(render_menu)
-    for i in render_menu:
-        print(i)
+    def render(scr):
+        scr.keypad(True)
+        for i in render_menu:
+            i.render(scr)
+    curses.wrapper(render)
+
