@@ -7,7 +7,7 @@ Author: Stephen Ling
 Copyright (c) 2020 Your Company
 '''
 import typing as ty
-from base import ComponentBase
+from .base import ComponentBase
 
 
 class ChoiceComponent(ComponentBase):
