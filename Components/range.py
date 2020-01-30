@@ -7,11 +7,11 @@ Author: Stephen Ling
 Copyright (c) 2020 Your Company
 '''
 import typing as ty
-from base import ComponentBase
+from .base import ComponentBase
 
 
-class OptionComponent(ComponentBase):
-    _name = "option__component"
+class RangeComponent(ComponentBase):
+    _name = "range__component"
 
     def __init__(self, name: ty.AnyStr, content: ty.List, handler: ty.Callable):
         self.content = content
@@ -22,7 +22,7 @@ class OptionComponent(ComponentBase):
 
 
 if __name__ == "__main__":
-    option = OptionComponent(name="Top Level Option", content=[
+    option = RangeComponent(name="Top Level Option", content=[
                              "a", "b", "c"], handler=lambda value: value % 2)
     print(option)
     print(type(option))
