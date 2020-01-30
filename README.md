@@ -37,6 +37,7 @@ cli.render()
 ## 模块设计
 1. base - ComponentBase
 > 这是一个基本类,描述所有组件的基本操作，基本属性。
+
     1. name      用于子组件查找父组件,命名规范为 {组件名}__component__{16位16进制token}
     2. start_row 开始渲染的行
     3. start_col 开始渲染的列
@@ -46,5 +47,6 @@ cli.render()
 
 2. text - TextComponent
 > 这是一个文字类,单行文字用于说明.
+
     1. text 需要渲染的文字
 
