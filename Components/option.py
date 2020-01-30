@@ -19,20 +19,28 @@ class OptionComponent(ComponentBase):
     _choosen_prefix = ">"
     _normal_prefix = "\u2002"
 
-    def __init__(self, name: ty.AnyStr, handler: ty.Callable, start_row: ty.SupportsInt, start_col: ty.SupportsInt, father: ty.Union[None, ComponentBase], options: ty.List, choosen_prefix: str):
+    def __init__(self, 
+                 name: ty.AnyStr, 
+                 handler: ty.Callable, 
+                 start_row: ty.SupportsInt, 
+                 start_col: ty.SupportsInt, 
+                 father: ty.Union[None, ComponentBase],
+                 children: ty.Union[ty.List, ComponentBase],
+                 choosen_prefix: str=">"):
         self._current_choosen = 0  # current choosen element
         self.choosen_prefix = choosen_prefix if choosen_prefix else OptionComponent._choosen_prefix
         self.normal_prefix = OptionComponent._normal_prefix * \
             len(self.choosen_prefix)
-        super().__init__(name, handler, start_row, father, options)
+        super().__init__(name, handler, start_row, start_col, father, children)
 
     def render(self, screen):
         # render
-        self._render_childern()
+        self._render_childern(screen)
         # wait user input
         while True:
             user_input = self._get_response(screen)
-
+            screen.addstr(8, 0, "                  ")
+            screen.addstr(8, 0, str(user_input))
             if user_input == KEY_UP:
                 # move cursor to previous one
                 current_choosen = self._current_choosen - 1
@@ -51,17 +59,11 @@ class OptionComponent(ComponentBase):
                 # do nothing
                 ...
 
-    def _render_childern(self):
-        _row = 0 + self.start_row
+    def _render_childern(self, screen):
         # render children elements
         elements = self.children
-        for element in elements:
-            r_obj = element.get_render_obj(_row)
-            r_obj.render()
-            _row += 1
-
-    def _get_render_obj(self, start_row):
-        return TextComponent(name=self.name, handler=None, start_row=start_row, start_col=0, father=self, children=None, text=self.name)
+        for idx, elem in enumerate(elements):
+            elem.render(screen)
 
     def _get_current_element(self):
         return self.children[self._current_choosen]
@@ -72,12 +74,4 @@ class OptionComponent(ComponentBase):
 
 
 if __name__ == "__main__":
-
-
-
-    class UltimateCLI:
-        def __init__(self, menu: ty.List):
-            self.menu = parse(menu)
-
-        def render(self):
-            return
+    pass
