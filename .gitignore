@@ -5,3 +5,4 @@ __pycache__/
 # redundant py files
 *.pyc
 *.pyi
+*.log
