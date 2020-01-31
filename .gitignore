@@ -1,0 +1,6 @@
+# dictionaries
+__pycache__/
+
+# redundant py files
+*.pyc
+*.pyi
