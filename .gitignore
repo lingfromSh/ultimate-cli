@@ -1,5 +1,6 @@
 # dictionaries
 __pycache__/
+.vscode/
 
 # redundant py files
 *.pyc
