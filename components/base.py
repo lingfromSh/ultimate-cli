@@ -78,6 +78,10 @@ class ComponentBase:
         """Return self's __screen."""
         return self.__screen
 
+    @property
+    def is_active(self) -> bool:
+        return self._active
+
     def deactivate(self):
         """Set self inactive."""
         self._active = False
@@ -85,3 +89,23 @@ class ComponentBase:
     def activate(self):
         """Set self active."""
         self._active = True
+
+    def get_start_row(self) -> typing.SupportsInt:
+        """Return self's _start_row."""
+        return self._start_row
+
+    def set_start_row(self, start_row: typing.SupportsInt):
+        """Set self _start_row."""
+        self._start_row = start_row
+
+    def get_start_col(self) -> typing.SupportsInt:
+        """Return self's _start_col."""
+        return self._start_col
+
+    def set_start_col(self, start_col: typing.SupportsInt):
+        """Set self _start_col."""
+        self._start_col = start_col
+
+    def get_handler(self):
+        """Make proper response after user input."""
+        ...
