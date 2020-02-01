@@ -14,6 +14,7 @@ import typing
 from copy import deepcopy
 
 from components import TextComponent
+from components import ChoiceComponent
 
 # color-constant
 COLOR_TRANSPARENT = -1
@@ -50,16 +51,19 @@ class CLI:
     # common
     _VALID_COMPONENT_TYPE = {
         "text": TextComponent,
-        # "choice": ChoiceComponent,
+        "choice": ChoiceComponent,
         # "checkbox": CheckBoxComponent,
         # "range": RangeComponent
     }
 
     @catch_exception
-    def __init__(self, color_setting: typing.Dict = {}, auto_clear: bool = False):
+    def __init__(self, color_setting: typing.Dict = {}, auto_clear: bool = True):
         """Init cli."""
         # init screen
         self.screen = curses.initscr()
+        curses.echo()
+        curses.cbreak()
+        self.screen.keypad(True)
         self.cursor_y, self.cursor_x = self.screen.getyx()
         # init screen color, color pair
         self.__colors = []
@@ -87,7 +91,7 @@ class CLI:
         """Clear the screen."""
         if self.auto_clear:
             self.screen.clear()
-            curses.endwin()
+        curses.endwin()
 
     def _init_colors(self):
         """Init colors"""
@@ -166,7 +170,7 @@ class CLI:
         return self.__color_count - 1
 
     @catch_exception
-    def add(self, element: typing.Dict) -> None:
+    def add(self, element: typing.Dict) -> object:
         """Add new element into cli."""
         # Ensure element is a dict.
         if not isinstance(element, dict):
@@ -175,10 +179,10 @@ class CLI:
         # Create a proper component according to the element's KEY:'type'.
         _element = deepcopy(element)
         _type = _element.pop("type", None)
-        # default: transparent
+        # default color: transparent
         _color = _element.pop("color", COLOR_TRANSPARENT)
-        _background = _element.pop(
-            "background", COLOR_TRANSPARENT)    # default: transparent
+        # default background: transparent
+        _background = _element.pop("background", COLOR_TRANSPARENT)
         _component_proto = CLI._VALID_COMPONENT_TYPE[_type]
         # Get current cursor y,x
         self.cursor_y, self.cursor_x = self.screen.getyx()
@@ -191,7 +195,8 @@ class CLI:
         component = _component_proto(**_element)
         # Add component into cli's element tree.
         self.__elements.update({f"{component.name}": component})
-        self.run()
+        self._render()
+        return component.get_handler()
 
     def clear(self) -> None:
         """Clear the screen & remove all elements."""
@@ -203,24 +208,24 @@ class CLI:
         # Remove all elements.
         self.__elements = {}
 
-    @catch_exception
     def run(self):
         """Run the cli."""
-        self._render()
+        self.running = True
+
+    def stop(self):
+        """Stop the cli."""
+        self.running = False
 
     def get_elements(self) -> typing.Dict:
         """Return elements"""
         return self.__elements
 
-    def _render(self):
+    def _render(self) -> object:
         """Use run instead of using _render directly"""
         for elem in self.__elements.values():
-            elem.render()
+            if elem.is_active:
+                elem.render()
         self.screen.refresh()
-
-    def get_handler(self):
-        """Return the handler for user input"""
-        ...
 
 
 if __name__ == "__main__":
@@ -243,19 +248,32 @@ if __name__ == "__main__":
         "color": COLOR_MAGENTA,
         "background": COLOR_TRANSPARENT
     }
-    text2 = {
-        "type": "text",
-        "text": "Hello,World!",
-        "color": slateblue,
-        "background": COLOR_TRANSPARENT
-    }
-    text3 = {
-        "type": "text",
-        "text": "Hello,World!",
-        "color": COLOR_BLUE,
-        "background": slateblue,
-    }
-    cli.add(text1)
-    cli.add(text2)
-    cli.add(text3)
-    cli.run()
+    handler = 1
+    while handler:
+        if handler in ['798132cd',
+                       'e1a86ba4',
+                       '0d0034c0']:
+            choice2 = {
+                "type": "choice",
+                "choices": [
+                    "Stephen",
+                    "Ling"
+                ]
+            }
+            cli.clear()
+            cli.add(text1)
+            handler = cli.add(choice2)
+            with open("log.log", "a+") as f:
+                f.write(f"{handler}\n")
+        else:
+            choice1 = {
+                "type": "choice",
+                "choices": ['798132cd',
+                            'e1a86ba4',
+                            '0d0034c0'],
+            }
+            cli.clear()
+            cli.add(text1)
+            handler = cli.add(choice1)
+            with open("log.log", "a+") as f:
+                f.write(f"{handler}\n")
