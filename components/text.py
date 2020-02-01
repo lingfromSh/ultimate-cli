@@ -20,8 +20,13 @@ class TextComponent(ComponentBase):
                  start_row: typing.SupportsInt,
                  start_col: typing.SupportsInt,
                  text: typing.AnyStr,
-                 color: typing.SupportsInt = curses.COLOR_BLACK):
-        self.__color = color    # must be registered color in curses win.
+                 color_pair: typing.SupportsInt,
+                 #  style: typing.SupportsInt = curses.A_NORMAL
+                 ):
+        # get text style
+        # self.__style = style
+        # get a color pair
+        self.__color_pair = color_pair
         # if you want to get text, use get_text instead.
         self.__text = text
         super().__init__(screen=screen, start_row=start_row, start_col=start_col)
@@ -40,15 +45,22 @@ class TextComponent(ComponentBase):
         """Return self's color number."""
         return self.__color
 
-    def get_color_rgb(self) -> typing.Tuple:
-        """Return self's color RGB tuple."""
-        return curses.color_content(self.__color)
-
     def set_color(self, color: typing.SupportsInt) -> bool:
         """Set color for text."""
-        if not isinstance(color, int):
+        if not isinstance(color, int) or color <= -1:
             return False
         self.__color = color
+        return True
+
+    def get_background(self) -> typing.SupportsInt:
+        """Return self's background number."""
+        return self.__background
+
+    def set_background(self, background: typing.SupportsInt) -> bool:
+        """Set background for text."""
+        if not isinstance(background, int) or background <= -1:
+            return False
+        self.__background = background
         return True
 
     def get_text(self) -> typing.AnyStr:
@@ -67,9 +79,12 @@ class TextComponent(ComponentBase):
         if not self._active:
             # Don't render self when _active is False
             return False
-
-        self._screen.addstr(
-            self._start_row, self._start_col, self.__text, self.__color)
-        # move cursor to the next row
-        self._screen.move(self._start_row+1, self._start_col)
+        _row = self._start_row
+        for t in self.__text.split("\n"):
+            # render text in a row
+            self._screen.addstr(
+                _row, self._start_col, t, curses.color_pair(self.__color_pair))
+            # move cursor to the next row
+            _row += 1
+            self._screen.move(_row, self._start_col)
         return True
